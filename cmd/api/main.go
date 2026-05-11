@@ -19,12 +19,21 @@ func main() {
 	defer db.DB.Close()
 
 	// ---------------------------------- auth ------------------------------------
-	auth_repository := reposirory.NewRepository(db)
-	auth_service := service.NewService(auth_repository)
-	auth_handler := handler.New_auth_handler(auth_service)
+	auth_repository := reposirory.Auth_new_repository(db)
+	auth_service := service.Auth_new_service(auth_repository)
+	auth_handler := handler.Auth_new_handler(auth_service)
+
+	// ---------------------------------- user ------------------------------------
+	user_repository := reposirory.User_new_repository(db)
+	user_service := service.User_new_service(user_repository)
+	user_handler := handler.User_new_handler(user_service)
 
 	// ---------------------------------- apis --------------------------------------
-	http.HandleFunc("/login", auth_handler.Login)
+	// Маршрутизатор
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("POST /login", auth_handler.Login)
+	mux.HandleFunc("POST /users", user_handler.User_create)
 
 	// url
 	http.ListenAndServe(":8081", nil)
