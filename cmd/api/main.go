@@ -36,5 +36,6 @@ func main() {
 	mux.HandleFunc("POST /users", user_handler.User_create)
 
 	// url
-	http.ListenAndServe(":8081", nil)
+	log.Fatal(http.ListenAndServe(":8081", mux))
+	// log.Fatal - если порт занят то программа не промолчит а даст информацию что порт занят
 }
