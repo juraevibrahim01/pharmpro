@@ -33,6 +33,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("POST /login", auth_handler.Login)
+	mux.HandleFunc("POST /login/check_otp", auth_handler.Check_otp)
 	mux.HandleFunc("POST /users", user_handler.User_create)
 
 	// url
