@@ -28,13 +28,19 @@ func main() {
 	user_service := service.User_new_service(user_repository)
 	user_handler := handler.User_new_handler(user_service)
 
+	// ---------------------------------- product ---------------------------------
+	product_repository := reposirory.Product_new_repository(db)
+	product_service := service.Product_new_service(product_repository)
+	product_handler := handler.Product_new_service(product_service)
+
 	// ---------------------------------- apis --------------------------------------
 	// Маршрутизатор
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("POST /login", auth_handler.Login)
 	mux.HandleFunc("POST /login/check_otp", auth_handler.Check_otp)
-	mux.HandleFunc("POST /users", user_handler.User_create)
+	mux.HandleFunc("POST /user", user_handler.User_create)
+	mux.HandleFunc("POST /product", product_handler.Product_insert)
 
 	// url
 	log.Fatal(http.ListenAndServe(":8081", mux))
