@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/juraevibrahim01/pharmpro/internal/handler"
+	"github.com/juraevibrahim01/pharmpro/internal/middleware"
 	"github.com/juraevibrahim01/pharmpro/internal/reposirory"
 	"github.com/juraevibrahim01/pharmpro/internal/service"
 	"github.com/juraevibrahim01/pharmpro/pkg"
@@ -42,7 +43,9 @@ func main() {
 	mux.HandleFunc("POST /user", user_handler.User_create)
 	mux.HandleFunc("POST /product", product_handler.Product_insert)
 
+	handleWithCors := middleware.CORSMiddleware(mux)
+
 	// url
-	log.Fatal(http.ListenAndServe(":8081", mux))
+	log.Fatal(http.ListenAndServe(":8081", handleWithCors))
 	// log.Fatal - если порт занят то программа не промолчит а даст информацию что порт занят
 }
