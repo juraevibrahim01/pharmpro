@@ -40,8 +40,8 @@ func main() {
 
 	mux.HandleFunc("POST /login", auth_handler.Login)
 	mux.HandleFunc("POST /login/check_otp", auth_handler.Check_otp)
-	mux.HandleFunc("POST /user", user_handler.User_create)
-	mux.HandleFunc("POST /product", product_handler.Product_insert)
+	mux.Handle("POST /user", middleware.AuthMiddleware(http.HandlerFunc(user_handler.User_create)))
+	mux.Handle("POST /product", middleware.AuthMiddleware(http.HandlerFunc(product_handler.Product_insert)))
 
 	handleWithCors := middleware.CORSMiddleware(mux)
 
